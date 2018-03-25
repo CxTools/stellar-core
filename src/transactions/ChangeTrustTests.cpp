@@ -158,4 +158,17 @@ TEST_CASE("change trust", "[tx][changetrust]")
             validateTrustLineIsConst();
         });
     }
+    SECTION("trustline on native asset")
+    {
+        const auto nativeAsset = makeNativeAsset();
+        for_versions_to(10, *app, [&] {
+            REQUIRE_THROWS_AS(gateway.changeTrust(nativeAsset, INT64_MAX - 1),
+                              ex_txINTERNAL_ERROR);
+        });
+
+        for_versions_from(11, *app, [&] {
+            REQUIRE_THROWS_AS(gateway.changeTrust(nativeAsset, INT64_MAX - 1),
+                              ex_CHANGE_TRUST_NATIVE_ASSET_NOT_ALLOWED);
+        });
+    }
 }

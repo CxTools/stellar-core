@@ -177,6 +177,8 @@ throwIf(ChangeTrustResult const& result)
         throw ex_CHANGE_TRUST_LOW_RESERVE{};
     case CHANGE_TRUST_SELF_NOT_ALLOWED:
         throw ex_CHANGE_TRUST_SELF_NOT_ALLOWED{};
+    case CHANGE_TRUST_NATIVE_ASSET_NOT_ALLOWED:
+        throw ex_CHANGE_TRUST_NATIVE_ASSET_NOT_ALLOWED{};
     case CHANGE_TRUST_SUCCESS:
         break;
     default:

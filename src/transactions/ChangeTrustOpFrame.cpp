@@ -24,6 +24,21 @@ bool
 ChangeTrustOpFrame::doApply(Application& app, LedgerDelta& delta,
                             LedgerManager& ledgerManager)
 {
+    if (app.getLedgerManager().getCurrentLedgerVersion() > 9)
+    {
+        if (mChangeTrust.line.type() == ASSET_TYPE_NATIVE)
+        { // since version 10 it is
+            // explicitly not allowed to create
+            // a trustline on the native asset
+            app.getMetrics()
+                .NewMeter({"op-change-trust", "failure", "native-asset"},
+                          "operation")
+                .Mark();
+            innerResult().code(CHANGE_TRUST_NATIVE_ASSET_NOT_ALLOWED);
+            return false;
+        }
+    }
+
     Database& db = ledgerManager.getDatabase();
 
     auto tlI = TrustFrame::loadTrustLineIssuer(getSourceID(), mChangeTrust.line,

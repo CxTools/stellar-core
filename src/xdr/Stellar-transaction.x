@@ -563,7 +563,9 @@ enum ChangeTrustResultCode
                                      // cannot create with a limit of 0
     CHANGE_TRUST_LOW_RESERVE =
         -4, // not enough funds to create a new trust line,
-    CHANGE_TRUST_SELF_NOT_ALLOWED = -5 // trusting self is not allowed
+    CHANGE_TRUST_SELF_NOT_ALLOWED = -5, // trusting self is not allowed
+    CHANGE_TRUST_NATIVE_ASSET_NOT_ALLOWED =
+        -6 // trusting the native asset is not allowed
 };
 
 union ChangeTrustResult switch (ChangeTrustResultCode code)
